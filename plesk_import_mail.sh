@@ -1,5 +1,5 @@
 #!/bin/bash
-# plesk_import_mail.sh v2.0. Last edited March 9, 2017
+# plesk_import_mail.sh v2.1
 #
 # Usage: plesk_import_mail.sh <domain> <mailname> <mailname_src_dir>
 # Example: plesk_import_mail.sh websavers.ca jordan /home/websavers/mailaccounts/jordan
@@ -21,6 +21,7 @@ DST_DIR=/var/qmail/mailnames/$DOMAIN/$MAILNAME/Maildir
 
 if [ -d "$DST_DIR" ] && [ -d "$SRC_DIR" ]; then
   rsync -avt --progress $SRC_DIR/ $DST_DIR/ --exclude ".Trash" --exclude "courierimap*" --exclude "dovecot*"
+  chown -R popuser:popuser $DST_DIR
 else
   echo "Error: directory does not exist. Src: $SRC_DIR | Dest: $DST_DIR"
 fi

@@ -20,7 +20,7 @@ SRC_DIR=$3
 DST_DIR=/var/qmail/mailnames/$DOMAIN/$MAILNAME/Maildir
 
 if [ -d "$DST_DIR" ] && [ -d "$SRC_DIR" ]; then
-  rsync -avt --progress $SRC_DIR/ $DST_DIR/ --exclude ".Trash" --exclude "courierimap*" --exclude "dovecot*"
+  rsync -avt --progress --safe-links $SRC_DIR/ $DST_DIR/ --exclude ".Trash" --exclude "courierimap*" --exclude "dovecot*"
   chown -R popuser:popuser $DST_DIR
 else
   echo "Error: directory does not exist. Src: $SRC_DIR | Dest: $DST_DIR"

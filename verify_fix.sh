@@ -13,6 +13,7 @@ set -u
 SRC=/tmp/fixcheck/src
 DST=/tmp/fixcheck/dst
 OUTSIDE=/tmp/fixcheck/outside_target
+
 rm -rf /tmp/fixcheck
 mkdir -p "$SRC" "$DST" "$OUTSIDE"
 echo "dummy" > "$OUTSIDE/file.txt"
@@ -25,7 +26,8 @@ echo "--- fixed invocation (with --safe-links) ---"
 rsync -avt --safe-links "$SRC/" "$DST/" 2>&1 | grep -E "Shared|normal" || true
 
 PASS=1
-if [ -e "$DST/.Shared" ]; then  echo "FAIL: symlink was recreated despite --safe-links"
+if [ -e "$DST/.Shared" ]; then
+  echo "FAIL: symlink was recreated despite --safe-links"
   PASS=0
 else
   echo "PASS: outside symlink skipped"
@@ -42,7 +44,8 @@ rm -rf "$DST" && mkdir -p "$DST"
 rsync -avt "$SRC/" "$DST/" >/dev/null 2>&1
 if [ -L "$DST/.Shared" ]; then
   echo "INFO: without --safe-links the symlink IS recreated (the bug)"
-else  echo "INFO: unexpected - symlink not recreated even without the flag"
+else
+  echo "INFO: unexpected - symlink not recreated even without the flag"
 fi
 
 if [ "$PASS" -eq 1 ]; then
